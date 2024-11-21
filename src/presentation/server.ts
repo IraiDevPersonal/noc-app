@@ -21,7 +21,6 @@ export class Server {
       );
 
       checkService.execute(url);
-      // checkService.execute("http://localhost:3000");
     });
   }
 }
