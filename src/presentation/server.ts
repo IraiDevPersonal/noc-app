@@ -11,16 +11,18 @@ export class Server {
   public static start() {
     console.log("Server started...");
 
-    CronService.createJob("*/5 * * * * *", () => {
-      const url = "https://google.com";
+    // Mandar email
 
-      const checkService = new CheckService(
-        fileSystemLogRepository,
-        () => console.log(`${url} is OK`),
-        console.log
-      );
+    // CronService.createJob("*/5 * * * * *", () => {
+    //   const url = "https://google.com";
 
-      checkService.execute(url);
-    });
+    //   const checkService = new CheckService(
+    //     fileSystemLogRepository,
+    //     () => console.log(`${url} is OK`),
+    //     console.log
+    //   );
+
+    //   checkService.execute(url);
+    // });
   }
 }
