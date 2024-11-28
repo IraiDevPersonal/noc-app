@@ -1,6 +1,7 @@
-/node_modules
-/dist
-/logs
-/covergare
-/mongo
+node_modules/
+dist/
+logs/
+covergare/
+mongo/
+postgres/
 .env
