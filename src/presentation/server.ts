@@ -1,22 +1,27 @@
-import { SendEmailLogs } from "../domain/use-cases/emails/send-email-logs";
+import { LogSeverityLevel } from "../domain/entities/log.entity";
+import { CheckService } from "../domain/use-cases/checks/check-service";
 import { FileSystemDatasource } from "../infrastructure/datasources/file-system.datasource";
+import { MongoLogDatasource } from "../infrastructure/datasources/mongo-log.datasource";
 import { LogRepositoryImpl } from "../infrastructure/repository/log.repository.impl";
+import { CronService } from "./cron/cron.service";
 import { EmailService } from "./email/email.service";
 
-const fileSystemLogRepository = new LogRepositoryImpl(
-  new FileSystemDatasource()
+const logRepository = new LogRepositoryImpl(
+  // new FileSystemDatasource()
+  new MongoLogDatasource()
 );
+
 const emailService = new EmailService();
 
 export class Server {
-  public static start() {
+  public static async start() {
     console.log("Server started...");
 
     // Mandar email
-    const sendEmailLogs = new SendEmailLogs(
-      emailService,
-      fileSystemLogRepository
-    );
+    // const sendEmailLogs = new SendEmailLogs(
+    //   emailService,
+    //   fileSystemLogRepository
+    // );
     // const emailService = new EmailService();
     // emailService.sendEmail({
     //   to: "ignacio.arr01@gmail.com",
@@ -33,15 +38,16 @@ export class Server {
     // ]);
 
     // CronService.createJob("*/5 * * * * *", () => {
-    //   const url = "https://google.com";
+    //   const url = "https://gooasdasdgle.com";
 
-    //   const checkService = new CheckService(
-    //     fileSystemLogRepository,
+    //   new CheckService(
+    //     logRepository,
     //     () => console.log(`${url} is OK`),
     //     console.log
-    //   );
-
-    //   checkService.execute(url);
+    //   ).execute(url);
     // });
+
+    const logs = await logRepository.getLogs(LogSeverityLevel.low);
+    console.log(logs);
   }
 }
