@@ -2,13 +2,15 @@ import { LogSeverityLevel } from "../domain/entities/log.entity";
 import { CheckService } from "../domain/use-cases/checks/check-service";
 import { FileSystemDatasource } from "../infrastructure/datasources/file-system.datasource";
 import { MongoLogDatasource } from "../infrastructure/datasources/mongo-log.datasource";
+import { PostgresLogDatasource } from "../infrastructure/datasources/postgres-log.datasource";
 import { LogRepositoryImpl } from "../infrastructure/repository/log.repository.impl";
 import { CronService } from "./cron/cron.service";
 import { EmailService } from "./email/email.service";
 
 const logRepository = new LogRepositoryImpl(
   // new FileSystemDatasource()
-  new MongoLogDatasource()
+  // new MongoLogDatasource()
+  new PostgresLogDatasource()
 );
 
 const emailService = new EmailService();
@@ -38,7 +40,7 @@ export class Server {
     // ]);
 
     // CronService.createJob("*/5 * * * * *", () => {
-    //   const url = "https://gooasdasdgle.com";
+    //   const url = "https://google.com";
 
     //   new CheckService(
     //     logRepository,
@@ -47,7 +49,7 @@ export class Server {
     //   ).execute(url);
     // });
 
-    const logs = await logRepository.getLogs(LogSeverityLevel.low);
+    const logs = await logRepository.getLogs(LogSeverityLevel.high);
     console.log(logs);
   }
 }
