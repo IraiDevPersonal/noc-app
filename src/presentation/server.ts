@@ -1,5 +1,4 @@
-import { LogSeverityLevel } from "../domain/entities/log.entity";
-import { CheckService } from "../domain/use-cases/checks/check-service";
+import { CheckServiceMultiple } from "../domain/use-cases/checks/check-service-multiple";
 import { FileSystemDatasource } from "../infrastructure/datasources/file-system.datasource";
 import { MongoLogDatasource } from "../infrastructure/datasources/mongo-log.datasource";
 import { PostgresLogDatasource } from "../infrastructure/datasources/postgres-log.datasource";
@@ -7,9 +6,11 @@ import { LogRepositoryImpl } from "../infrastructure/repository/log.repository.i
 import { CronService } from "./cron/cron.service";
 import { EmailService } from "./email/email.service";
 
-const logRepository = new LogRepositoryImpl(
-  // new FileSystemDatasource()
-  // new MongoLogDatasource()
+const fsLogRepository = new LogRepositoryImpl(new FileSystemDatasource());
+
+const mongoLogRepository = new LogRepositoryImpl(new MongoLogDatasource());
+
+const postgresLogRepository = new LogRepositoryImpl(
   new PostgresLogDatasource()
 );
 
@@ -49,7 +50,19 @@ export class Server {
     //   ).execute(url);
     // });
 
-    const logs = await logRepository.getLogs(LogSeverityLevel.high);
-    console.log(logs);
+    // TODO: Este caso de uso gatilla el almacenamiento los los logs en 3 datasource que se han implementado
+
+    // CronService.createJob("*/5 * * * * *", () => {
+    //   const url = "https://google.com";
+
+    //   new CheckServiceMultiple(
+    //     [fsLogRepository, mongoLogRepository, postgresLogRepository],
+    //     () => console.log(`${url} is OK`),
+    //     console.log
+    //   ).execute(url);
+    // });
+
+    // const logs = await logRepository.getLogs(LogSeverityLevel.high);
+    // console.log(logs);
   }
 }
